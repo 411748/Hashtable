@@ -2,6 +2,8 @@
 
 #include "Node.h"
 
+// Code for creating the linked list used to make the hashtable
+
 Node::Node(Student* newStudent) : currentStudent(newStudent), next(nullptr) {}
 
 Node::~Node() {

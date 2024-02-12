@@ -1,15 +1,18 @@
 // HashTable.cpp
 
+//includes
 #include "HashTable.h"
 #include <iostream>
 #include <cstring>
 
 using namespace std;
 
+//Constructor
 HashTable::HashTable(int initialCapacity) : capacity(initialCapacity) {
     table = new Node*[capacity]();
 }
 
+//Deconstructor
 HashTable::~HashTable() {
     for (int i = 0; i < capacity; ++i) {
         Node* current = table[i];
@@ -22,6 +25,7 @@ HashTable::~HashTable() {
     delete[] table;
 }
 
+//Function to add student to hashtable
 void HashTable::addStudent(int studentID, const char* firstName, const char* lastName, double GPA) {
     int index = hashFunction(studentID);
     Node* newNode = new Node(new Student(studentID, firstName, lastName, GPA));
@@ -37,6 +41,7 @@ void HashTable::addStudent(int studentID, const char* firstName, const char* las
     }
 }
 
+//Function to delete student from hashtable
 void HashTable::deleteStudent(int studentID) {
     int index = hashFunction(studentID);
     Node* current = table[index];
@@ -73,10 +78,12 @@ void HashTable::printTable() const {
     }
 }
 
+//Function to hash 
 int HashTable::hashFunction(int key) const {
     return key % capacity;
 }
 
+//Function to resize after 3 collisions
 void HashTable::resize(int newCapacity) {
     Node** newTable = new Node*[newCapacity]();
     
