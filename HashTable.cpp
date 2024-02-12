@@ -2,7 +2,7 @@
 
 #include "HashTable.h"
 #include <iostream>
-#include <cstring> 
+#include <cstring>
 
 using namespace std;
 
@@ -25,7 +25,7 @@ HashTable::~HashTable() {
 void HashTable::addStudent(int studentID, const char* firstName, const char* lastName, double GPA) {
     int index = hashFunction(studentID);
     Node* newNode = new Node(new Student(studentID, firstName, lastName, GPA));
-    
+
     if (table[index] == nullptr) {
         table[index] = newNode;
     } else {
@@ -75,4 +75,23 @@ void HashTable::printTable() const {
 
 int HashTable::hashFunction(int key) const {
     return key % capacity;
+}
+
+void HashTable::resize(int newCapacity) {
+    Node** newTable = new Node*[newCapacity]();
+    
+    for (int i = 0; i < capacity; ++i) {
+        Node* current = table[i];
+        while (current != nullptr) {
+            Node* next = current->getNext();
+            int newIndex = hashFunction(current->getStudent()->studentID) % newCapacity;
+            current->setNext(newTable[newIndex]);
+            newTable[newIndex] = current;
+            current = next;
+        }
+    }
+    
+    delete[] table;
+    table = newTable;
+    capacity = newCapacity;
 }
